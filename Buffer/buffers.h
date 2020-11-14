@@ -32,8 +32,6 @@ public:
     void setServerKey(const QString &serverKey);
 
     int getSocketNumber() const;
-    void increaceSocketNumber();
-    void decreaseSocketNumber();
 
     void appendTabPage(int socketptr);
     void removeTabPage(int index);

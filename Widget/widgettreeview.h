@@ -34,7 +34,6 @@ private slots:
 
 private:
     void slot_current_change(const QModelIndex &current, const QModelIndex &previous);
-    void slot_add_socket_item(int index, int type, const QString& address, const QString& port);
 
 private:
     Ui::WidgetTreeView *ui;

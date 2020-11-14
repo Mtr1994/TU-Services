@@ -19,16 +19,6 @@ int Buffers::getSocketNumber() const
     return mSocketNumber;
 }
 
-void Buffers::increaceSocketNumber()
-{
-    mSocketNumber++;
-}
-
-void Buffers::decreaseSocketNumber()
-{
-    mSocketNumber--;
-}
-
 void Buffers::appendTabPage(int socketptr)
 {
     mTabPages->addTab(socketptr);
@@ -102,7 +92,7 @@ void Buffers::removeItem(int ptr, const QString &ip, int port)
     {
         QStandardItem *item = mModelSocketItems->itemFromIndex(index);
         if (nullptr == item) continue;
-        int socketptr = item->data(Qt::UserRole + 5).toUInt();
+        int socketptr = item->data(Qt::UserRole + 4).toUInt();
         if (ptr == socketptr)
         {
             mModelSocketItems->removeRow(item->row(), index.parent());
@@ -123,10 +113,15 @@ void Buffers::addClientItem(const QString &key, const int socketptr, const QStri
     item->setData(port, Qt::UserRole + 3);
     item->setData(socketptr, Qt::UserRole + 4);
     item->setData(mSocketNumber, Qt::UserRole + 5); // tab index
+    item->setData(key, Qt::UserRole + 6); // server key
 
     QStandardItem *parentItem = mModelSocketItems->itemFromIndex(list.at(0));
     if (nullptr == parentItem) delete item;
-    else parentItem->appendRow(item);
+    else
+    {
+        parentItem->appendRow(item);
+        mSocketNumber++;
+    }
 }
 
 void Buffers::removeClientItem(const QString &key, const int socketptr, const QString &address, const quint16 port)
@@ -147,6 +142,7 @@ void Buffers::removeClientItem(const QString &key, const int socketptr, const QS
             if (ptr == socketptr)
             {
                 mModelSocketItems->removeRow(item->row(), client.parent());
+                mSocketNumber--;
                 break;
             }
         }
@@ -163,6 +159,7 @@ void Buffers::addServerItem(const QString &address, const quint16 port)
     item->setData(port, Qt::UserRole + 3);
     item->setData(-1, Qt::UserRole + 4);
     item->setData(-1, Qt::UserRole + 5);
+    item->setData("", Qt::UserRole + 6);
 
     mModelSocketItems->appendRow(item);
 }

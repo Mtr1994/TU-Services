@@ -27,11 +27,15 @@ bool ServiceCenter::addServer(const QString &address, int port)
     connect(server, &TcpServer::sgl_read_data, this, &ServiceCenter::slot_read_data);
 
     bool status = server->listen(QHostAddress(address), port);
-    if (status)
-        mMapServer.insert(address + ":" + QString::number(port), server);
+    if (status) mMapServer.insert(address + ":" + QString::number(port), server);
     else delete server;
 
     return status;
+}
+
+void ServiceCenter::removeServer(const QString &key)
+{
+    mMapServer.remove(key);
 }
 
 int ServiceCenter::sentData(QString &key, int socketptr, const QByteArray &data)
@@ -44,7 +48,6 @@ int ServiceCenter::sentData(QString &key, int socketptr, const QByteArray &data)
 
 void ServiceCenter::slot_new_client(const QString &key, const int socketptr, const QString &address, const quint16 port)
 {
-    Buffers::getInstance()->increaceSocketNumber();
     Buffers::getInstance()->addClientItem(key, socketptr, address, port);
     Buffers::getInstance()->appendTabPage(socketptr);
 
@@ -53,7 +56,6 @@ void ServiceCenter::slot_new_client(const QString &key, const int socketptr, con
 
 void ServiceCenter::slot_close_client(const QString& key, const int socketptr, const QString &address, const quint16 port)
 {
-    Buffers::getInstance()->decreaseSocketNumber();
     Buffers::getInstance()->removeClientItem(key, socketptr, address, port);
     Buffers::getInstance()->removeTabPage(socketptr);
 }

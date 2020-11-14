@@ -50,7 +50,7 @@ void MainWindow::init()
         if (status) Buffers::getInstance()->addServerItem(args.getAddress(), args.getPort().toUInt());
         else
         {
-            DialogNote note(this->nativeParentWidget());
+            DialogNote note(this);
             note.hideButtonCancel();
             note.showMessage("监听失败");
         }

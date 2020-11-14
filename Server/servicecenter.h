@@ -13,6 +13,7 @@ public:
     explicit ServiceCenter(QObject *parent = nullptr);
 
     bool addServer(const QString &address, int port);
+    void removeServer(const QString& key);
 
     int sentData(QString& key, int socketptr, const QByteArray& data);
 

@@ -57,24 +57,15 @@ void WidgetTreeView::slot_current_change(const QModelIndex &current, const QMode
     Q_UNUSED(previous);
     if (!current.isValid()) return;
     QStandardItem *item = mModelSockets->itemFromIndex(current);
-    if (item->data(Qt::UserRole + 1).toUInt() == Type_Tcp_Client)
-        item = mModelSockets->itemFromIndex(current.parent());
-
     if (nullptr == item) return;
-
-    QString key = item->data(Qt::UserRole + 2).toString() + ":" + item->data(Qt::UserRole + 3).toString();
+    if (item->data(Qt::UserRole + 1).toUInt() == Type_Tcp_Server) return;
+    QString key = item->data(Qt::UserRole + 6).toString();
     Buffers::getInstance()->setServerKey(key);
-    emit sgl_current_index_change(mTabPages->getTabCount());
-}
-
-void WidgetTreeView::slot_add_socket_item(int index, int type, const QString &address, const QString &port)
-{
-
+    emit sgl_current_index_change(item->data(Qt::UserRole + 5).toUInt());
 }
 
 void WidgetTreeView::on_treeView_customContextMenuRequested(const QPoint &pos)
 {
-    LOG_DEBUG("123");
     // 渲染管道右键菜单
     QModelIndex index = ui->treeView->indexAt(pos);
     if (!index.isValid()) return;
@@ -93,7 +84,7 @@ void WidgetTreeView::on_treeView_customContextMenuRequested(const QPoint &pos)
     connect(&actionHide, &QAction::triggered, [&item]() { item->setCheckState(Qt::Unchecked); });
     menu.addAction(&actionHide);
     QAction actionDel(tr("删除"));
-    connect(&actionDel, &QAction::triggered, [this, index](){  });
+    connect(&actionDel, &QAction::triggered, [this, index](){});
     menu.addAction(&actionDel);
     QAction actionInfo(tr("详细信息"));
     connect(&actionInfo, &QAction::triggered, [this]() {  });
