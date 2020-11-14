@@ -19,6 +19,7 @@ public:
     void setModelItems(QStandardItemModel *modelItems);
     void removeItem(int ptr, const QString& ip, int port);
     void addClientItem(const QString& key, const int socketptr, const QString &address,const quint16 port);
+    void addClientItem(const int socketptr, const QString &address,const quint16 port);
     void removeClientItem(const QString& key, const int socketptr, const QString &address,const quint16 port);
     void addServerItem(const QString &address,const quint16 port);
     void removeServerItem(const QString &address,const quint16 port);

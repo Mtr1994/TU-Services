@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     QRect rect = QGuiApplication::screens().at(0)->availableGeometry();
 
     resize(rect.width() * 0.52, rect.height() * 0.6);
-    setWindowTitle("土豆网络测试工具");
+    setWindowTitle("木头人网络测试工具");
 }
 
 MainWindow::~MainWindow()
@@ -45,14 +45,12 @@ void MainWindow::init()
         DialogTcpServerArgs args(this);
         args.exec();
         if (args.result() == 0) return;
-
         bool status = glService->addServer(args.getAddress(), args.getPort().toUInt());
-        if (status) Buffers::getInstance()->addServerItem(args.getAddress(), args.getPort().toUInt());
-        else
+        if (!status)
         {
             DialogNote note(this);
             note.hideButtonCancel();
-            note.showMessage("监听失败");
+            note.showMessage("新建服务失败");
         }
     });
 
@@ -60,8 +58,16 @@ void MainWindow::init()
         DialogTcpClientArgs args(this);
         args.exec();
         if (args.result() == 0) return;
-        int count = ui->tabPages->getTabCount();
-       // ui->treeView->addItem(count, Type_Tcp_Client, args.getAddress(), args.getPort());
+        QString address = args.getAddress();
+        int port = args.getPort().toUInt();
+        bool status = glService->addSocket(address, port);
+        QString key = QString("%1:%2").arg(address).arg(port);
+        if (!status)
+        {
+            DialogNote note(this);
+            note.hideButtonCancel();
+            note.showMessage("无法连接到服务器");
+        }
     });
 
     ui->splitter->setStretchFactor(0, 3);

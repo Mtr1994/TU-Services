@@ -124,6 +124,21 @@ void Buffers::addClientItem(const QString &key, const int socketptr, const QStri
     }
 }
 
+void Buffers::addClientItem(const int socketptr, const QString &address, const quint16 port)
+{
+    LOG_DEBUG("add client");
+    QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), QString("%1:%2").arg(address).arg(port));
+    item->setData(Type_Tcp_Client, Qt::UserRole + 1);
+    item->setData(address, Qt::UserRole + 2);
+    item->setData(port, Qt::UserRole + 3);
+    item->setData(socketptr, Qt::UserRole + 4);
+    item->setData(mSocketNumber, Qt::UserRole + 5); // tab index
+    item->setData("", Qt::UserRole + 6); // server key
+
+    mSocketNumber++;
+    mModelSocketItems->appendRow(item);
+}
+
 void Buffers::removeClientItem(const QString &key, const int socketptr, const QString &address, const quint16 port)
 {
     Q_UNUSED(address);

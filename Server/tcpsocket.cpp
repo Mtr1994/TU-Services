@@ -68,3 +68,8 @@ void TcpSocket::startNext()
         watcher.setFuture(QtConcurrent::run(this,&TcpSocket::handleData,datas.dequeue(),this->peerAddress().toString(),this->peerPort()));
     }
 }
+
+qintptr TcpSocket::getSocketDescriptor() const
+{
+    return mSocketDescriptor;
+}

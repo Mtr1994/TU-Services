@@ -27,8 +27,15 @@ bool ServiceCenter::addServer(const QString &address, int port)
     connect(server, &TcpServer::sgl_read_data, this, &ServiceCenter::slot_read_data);
 
     bool status = server->listen(QHostAddress(address), port);
-    if (status) mMapServer.insert(address + ":" + QString::number(port), server);
-    else delete server;
+    if (status)
+    {
+        mMapServer.insert(address + ":" + QString::number(port), server);
+        Buffers::getInstance()->addServerItem(address, port);
+    }
+    else
+    {
+        delete server;
+    }
 
     return status;
 }
@@ -36,6 +43,34 @@ bool ServiceCenter::addServer(const QString &address, int port)
 void ServiceCenter::removeServer(const QString &key)
 {
     mMapServer.remove(key);
+}
+
+bool ServiceCenter::addSocket(const QString &address, int port)
+{
+    TcpSocket *socket = new TcpSocket(port);
+    connect(socket, &TcpSocket::sgl_read_data, this, &ServiceCenter::slot_read_data);
+    //connect(socket, &TcpSocket::sgl_close_client, this, &ServiceCenter::slot_close_client);
+
+    socket->connectToHost(QHostAddress(address), port);
+    socket->waitForConnected();
+    if (socket->state() == QTcpSocket::ConnectedState)
+    {
+        mMapSocket.insert(address + ":" + QString::number(port), socket);
+        Buffers::getInstance()->addClientItem(socket->getSocketDescriptor(), address, port);
+        Buffers::getInstance()->appendTabPage(socket->getSocketDescriptor());
+        Buffers::getInstance()->appentTabData(socket->getSocketDescriptor(), QByteArray::fromStdString(QString("已连接到服务 {%1:%2}").arg(address).arg(port).toStdString()));
+        return true;
+    }
+    else
+    {
+        delete socket;
+        return false;
+    }
+}
+
+void ServiceCenter::removeSocket(int socketptr)
+{
+
 }
 
 int ServiceCenter::sentData(QString &key, int socketptr, const QByteArray &data)
@@ -50,7 +85,6 @@ void ServiceCenter::slot_new_client(const QString &key, const int socketptr, con
 {
     Buffers::getInstance()->addClientItem(key, socketptr, address, port);
     Buffers::getInstance()->appendTabPage(socketptr);
-
     Buffers::getInstance()->appentTabData(socketptr, QByteArray::fromStdString(QString("新链接 {%1:%2}").arg(address).arg(port).toStdString()));
 }
 
