@@ -18,6 +18,7 @@
 
 #include <QDebug>
 #include <QThread>
+#include <iostream>
 
 using namespace mtr;
 
@@ -30,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     init();
 
     setWindowTitle("木头人网络测试工具");
-
-    qDebug() << "main " << QThread::currentThreadId();
 }
 
 MainWindow::~MainWindow()
