@@ -4,6 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
+QMAKE_CXXFLAGS += -execution-charset:utf-8
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -18,10 +20,10 @@ SOURCES += \
     Dialog/dialogtcpclientargs.cpp \
     Dialog/dialogtcpserverargs.cpp \
     Log/logger.cpp \
-    Server/servicecenter.cpp \
-    Server/tcpserver.cpp \
-    Server/tcpsocket.cpp \
-    Server/threadhandle.cpp \
+    Manager/clientmanager.cpp \
+    Manager/servermanager.cpp \
+    Net/tcpserver.cpp \
+    Net/tcpsocket.cpp \
     Widget/widgettabcontent.cpp \
     Widget/widgettabpages.cpp \
     Widget/widgettreeview.cpp \
@@ -34,13 +36,13 @@ HEADERS += \
     Dialog/dialogtcpclientargs.h \
     Dialog/dialogtcpserverargs.h \
     Log/logger.h \
+    Manager/clientmanager.h \
+    Manager/servermanager.h \
+    Net/tcpserver.h \
+    Net/tcpsocket.h \
     Public/defines.h \
-    Public/encoding.h \
+    Public/threadpool.h \
     Public/treeitemdelegate.h \
-    Server/servicecenter.h \
-    Server/tcpserver.h \
-    Server/tcpsocket.h \
-    Server/threadhandle.h \
     Widget/widgettabcontent.h \
     Widget/widgettabpages.h \
     Widget/widgettreeview.h \

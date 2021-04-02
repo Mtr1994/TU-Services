@@ -4,15 +4,11 @@
 #include <QDateTime>
 
 #include "Public/defines.h"
-#include "Public/encoding.h"
 #include "Buffer/buffers.h"
 #include "Log/logger.h"
-#include "Server/servicecenter.h"
 
 // test
 #include <QDebug>
-
-extern ServiceCenter* glService;
 
 WidgetTabContent::WidgetTabContent(int socketptr, QWidget *parent) :
     QWidget(parent),
@@ -62,7 +58,7 @@ void WidgetTabContent::on_btnSend_clicked()
         array = array.toUpper();
     }
 
-    int size = glService->sentData(key, mSocketptr, array);
+    int size = 0;//ServiceCenter::getService().sentData(key, mSocketptr, array);
     if (size == 0) return appendError("发送失败");
 
     LOG_DEBUG("write " + QString::number(size).toStdString() + " bytes of data");

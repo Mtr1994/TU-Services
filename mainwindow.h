@@ -17,6 +17,13 @@ public:
 
     void init();
 
+public slots:
+    void slot_add_server_status(bool success);
+
+private slots:
+    void slot_add_server();
+    void slot_add_client();
+
 private:
     Ui::MainWindow *ui;
 };

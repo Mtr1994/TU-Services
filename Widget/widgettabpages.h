@@ -33,7 +33,7 @@ public:
     void appentData(int socketptr, const QByteArray& data);
 
 public slots:
-    void slot_current_index_change(int index);
+    void slot_current_index_change(int socketptr);
     void slot_new_client_coming(const int ptr, const QString & address, const quint16 port, QStandardItem *parentitem);
 
 private:

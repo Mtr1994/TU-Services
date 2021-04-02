@@ -2,32 +2,23 @@
 #define BUFFERS_H
 
 #include <QObject>
+#include <QModelIndex>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QMap>
 
-#include "Server/tcpserver.h"
-#include "Widget/widgettabpages.h"
-
+class WidgetTabPages;
+class WidgetTreeView;
 class Buffers : public QObject
 {
     Q_OBJECT
 public:
     static Buffers *getInstance();
 
-    QStandardItemModel *getModelItems() const;
-    void setModelItems(QStandardItemModel *modelItems);
-    void removeItem(int ptr, const QString& ip, int port);
-    void addClientItem(const QString& key, const int socketptr, const QString &address,const quint16 port);
-    void addClientItem(const int socketptr, const QString &address,const quint16 port);
-    void removeClientItem(const QString& key, const int socketptr, const QString &address,const quint16 port);
-    void addServerItem(const QString &address,const quint16 port);
-    void removeServerItem(const QString &address,const quint16 port);
-
-    QMap<QString, TcpServer *> getMapServers() const;
-    void setMapServers(const QMap<QString, TcpServer *> &mapServers);
-    void insertServer(const QString& key, TcpServer* server);
-    TcpServer *getTcpServer(const QString& key) const; // ip:port 组成的 key
+//    QMap<QString, TcpServer *> getMapServers() const;
+//    void setMapServers(const QMap<QString, TcpServer *> &mapServers);
+//    void insertServer(const QString& key, TcpServer* server);
+//    TcpServer *getTcpServer(const QString& key) const; // ip:port 组成的 key
 
     QString getServerKey() const;
     void setServerKey(const QString &serverKey);
@@ -40,6 +31,10 @@ public:
     void appentTabData(int socketptr, const QByteArray& data);
 
     void setTabPages(WidgetTabPages *tabPages);
+    void setTreeView(WidgetTreeView *treeview);
+
+    void setItemExpand(const QStandardItem* item);
+    void setCurrentIndex(const QModelIndex &index);
 
 protected:
     // 禁止外部构造和虚构, 子类的"内部"的其他函数可以调用
@@ -53,10 +48,6 @@ private:
         return bf;
     };
 
-    QStandardItemModel *mModelSocketItems = nullptr;
-
-    QMap<QString, TcpServer *> mMapServers;
-
     // 当前选中客户端或者服务端的 Key
     QString mServerKey;
 
@@ -64,7 +55,10 @@ private:
     int mSocketNumber = 0;
 
     // tab 页管理
-    WidgetTabPages *mTabPages;
+    WidgetTabPages *mTabPages = nullptr;
+
+    // tree view 管理
+    WidgetTreeView *mTreeView = nullptr;
 };
 
 #endif // BUFFERS_H

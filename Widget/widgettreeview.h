@@ -5,8 +5,10 @@
 #include <QString>
 #include <QModelIndex>
 #include <QStandardItemModel>
+#include <QStandardItem>
 
-#include "widgettabpages.h"
+#include "Manager/servermanager.h"
+#include "Manager/clientmanager.h"
 
 namespace Ui {
 class WidgetTreeView;
@@ -20,14 +22,23 @@ public:
     explicit WidgetTreeView(QWidget *parent = nullptr);
     ~WidgetTreeView();
 
-    void init(WidgetTabPages* widget);
+    void init();
 
     void deleteItem(int index);
 
     bool contains(int index);
 
+    void setItemExpand(const QStandardItem* item);
+
+    void setCurrentIndex(const QModelIndex& index);
+
 signals:
-    void sgl_current_index_change(int index);
+    void sgl_current_socket_change(int index);
+    void sgl_server_operation(int operation, const ServerInfo& info);
+
+public slots:
+    void slot_server_operation(int operation, const ServerInfo& info);
+    void slot_client_operation(int operation, const ClientInfo& info);
 
 private slots:
     void on_treeView_customContextMenuRequested(const QPoint &pos);
@@ -38,8 +49,6 @@ private:
 private:
     Ui::WidgetTreeView *ui;
     QStandardItemModel *mModelSockets = nullptr;
-
-    WidgetTabPages *mTabPages = nullptr;
 };
 
 #endif // WIDGETTREEVIEW_H

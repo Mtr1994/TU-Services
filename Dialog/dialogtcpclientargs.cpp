@@ -1,8 +1,6 @@
 ﻿#include "dialogtcpclientargs.h"
 #include "ui_dialogtcpclientargs.h"
 
-#include "Public/encoding.h"
-
 DialogTcpClientArgs::DialogTcpClientArgs(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogTcpClientArgs)

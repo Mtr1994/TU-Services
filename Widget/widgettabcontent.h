@@ -6,9 +6,6 @@
 #include <QByteArray>
 #include <QList>
 
-#include "Server/tcpserver.h"
-#include "Server/tcpsocket.h"
-
 namespace Ui {
 class WidgetTabContent;
 }
