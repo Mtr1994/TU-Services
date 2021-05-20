@@ -87,7 +87,6 @@
      <string>帮助</string>
     </property>
     <addaction name="actionVersion"/>
-    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
