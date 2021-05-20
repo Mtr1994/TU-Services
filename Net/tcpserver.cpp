@@ -17,18 +17,18 @@ TcpServer::~TcpServer()
 
 void TcpServer::pauseSocket(uint32_t socketdescriptor)
 {
-   // mMapSockets[socketdescriptor].pause();
+    mMapSockets[socketdescriptor]->pause();
 }
 
 void TcpServer::startSocket(uint32_t socketdescriptor)
 {
-   // mMapSockets[socketdescriptor].startup();
+    mMapSockets[socketdescriptor]->startup();
 }
 
 void TcpServer::delSocket(uint32_t socketdescriptor)
 {
-   // mMapSockets[socketdescriptor].close();
-   // mMapSockets.take(socketdescriptor).deleteLater();
+    mMapSockets[socketdescriptor]->close();
+    mMapSockets.take(socketdescriptor)->deleteLater();
 }
 
 void TcpServer::clearSocket()
@@ -37,6 +37,22 @@ void TcpServer::clearSocket()
 //    {
 //       // if (socket.isOpen()) socket.close();
     //    }
+}
+
+void TcpServer::writeData(uint32_t socketdescriptor, const QByteArray &data)
+{
+    int length = 0;
+    for (auto& socket : mMapSockets)
+    {
+        if (socket->socketDescriptor() == socketdescriptor)
+        {
+            length = socket->write(data);
+            break;
+        }
+    }
+
+    // 返回发送的数据量
+    emit sgl_socket_write(socketdescriptor, length);
 }
 
 void TcpServer::slot_socket_ready_read(TcpSocket* socket, const QByteArray &data)
@@ -86,14 +102,12 @@ ClientInfo TcpServer::getClientInfo(TcpSocket *socket)
 {
     ClientInfo info
     {
+        Tcp_Client_Slave,
         mServerKey,
         socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()),
-        socket->peerAddress().toString(),
-        socket->peerPort(),
-        socket->localAddress().toString(),
-        socket->localPort(),
         socket->socketDescriptor(),
-        nullptr
+        "",
+        ""
     };
 
     return info;

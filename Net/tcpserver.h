@@ -21,6 +21,8 @@ public:
     void delSocket(uint32_t socketdescriptor);
     void clearSocket();
 
+    void writeData(uint32_t socketdescriptor, const QByteArray& data);
+
     QString getServerKey() const {return mServerKey;}
 
 signals:
@@ -28,6 +30,7 @@ signals:
     void sgl_socket_connected(int operation, const ClientInfo& info);
     void sgl_socket_disconnected(int operation, const ClientInfo& info);
     void sgl_socket_stateChanged(int operation, const ClientInfo& info);
+    void sgl_socket_write(uint32_t socketdescriptor, int length);
 
 public slots:
     void slot_socket_ready_read(TcpSocket* socket, const QByteArray& data);

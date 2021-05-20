@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "Public/defines.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +20,7 @@ public:
 
 public slots:
     void slot_add_server_status(bool success);
+    void slot_client_operation_(int operation, const ClientInfo& info);
 
 private slots:
     void slot_add_server();

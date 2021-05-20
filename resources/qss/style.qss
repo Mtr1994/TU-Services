@@ -8,6 +8,11 @@ QWidget:focus
     outline: none; /*去掉选中时的虚线边框*/
 }
 
+QWidget[background="true"]
+{
+    background-color: #fefefe;
+}
+
 /* 状态栏样式 */
 QStatusBar
 {
@@ -24,7 +29,7 @@ QTreeView
 
 QTreeView::item
 {
-    height: 2.1em;
+    min-height: 3.2em;
     background-color: #00000000;
     color: #222222;
 }
@@ -232,16 +237,23 @@ QSlider::handle:horizontal:disabled {
     border-radius: 4px;
 }
 
-QMenuBar::item {
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-
+QMenuBar
+{
     background-color: #fefefe;
+    border: none;
+    border-bottom: 1px solid #dddddd;
+    min-height: 1.8em;
 }
 
-QMenuBar::item::selected{
+QMenuBar::item
+{
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: transparent;
+}
+
+QMenuBar::item::selected
+{
     background-color:#f2f3f5;
     border-radius: 0.2em;;
 }
@@ -255,7 +267,8 @@ QComboBox
     padding-left: 6px;
 }
 
-QComboBox QAbstractItemView {
+QComboBox QAbstractItemView
+{
     outline: 0px solid gray;   /* 选定项的虚框 */
     border: 1px solid #dcdfe6;   /* 整个下拉窗体的边框 */
     background-color: #fefefe;   /* 整个下拉窗体的背景色 */
@@ -266,15 +279,17 @@ QComboBox:hover
     border: 1px solid #c0c4cc;
 }
 
-QComboBox::drop-down {
+QComboBox::drop-down
+{
     padding-right: 1em;
     border: none;
     min-width: 1em;
     min-height: 1em;
 }
 
-QComboBox::down-arrow {
-    border-image: url(:/res/image/public/combobox_down.png);
+QComboBox::down-arrow
+{
+    border-image: url(:/resources/image/public/combobox_down.png);
     min-width: 1em;
     min-height: 1em;
 }
@@ -288,6 +303,13 @@ QComboBox QAbstractItemView::item
 }
 
 QComboBox QAbstractItemView::item:hover
+{
+    padding-left: 0px;
+    color: #333333;
+    background-color: #f5f7fa;
+}
+
+QComboBox QAbstractItemView::item:selected
 {
     padding-left: 0px;
     color: #333333;

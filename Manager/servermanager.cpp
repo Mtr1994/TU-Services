@@ -25,6 +25,7 @@ bool ServerManager::addServer(const QString &address, uint32_t port)
         connect(server, &TcpServer::sgl_socket_connected, this, &ServerManager::sgl_client_operation);
         connect(server, &TcpServer::sgl_socket_disconnected, this, &ServerManager::sgl_client_operation);
         connect(server, &TcpServer::sgl_socket_stateChanged, this, &ServerManager::sgl_client_operation);
+        connect(server, &TcpServer::sgl_socket_write, this, &ServerManager::sgl_socket_write);
 
         connect(server, &TcpServer::newConnection, server, &TcpServer::slot_new_socket);
 
@@ -50,5 +51,23 @@ void ServerManager::slot_operation_server(int operation, const ServerInfo &info)
         server->clearSocket();
         server->close();
         delete server;
+    }
+}
+
+void ServerManager::slot_operation_client(int operation, const ClientInfo &info)
+{
+    if (operation == Client_Close)
+    {
+        TcpServer* server = mMapServers.value(info.serverkey);
+        if (nullptr == server) return;
+
+        server->delSocket(info.socketDescriptor);
+    }
+    else if (operation == Client_Data)
+    {
+        TcpServer* server = mMapServers.value(info.serverkey);
+        if (nullptr == server) return;
+
+        server->writeData(info.socketDescriptor, info.data);
     }
 }

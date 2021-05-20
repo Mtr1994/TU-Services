@@ -8,6 +8,7 @@
 #include <QMap>
 
 #include "Widget/widgettabcontent.h"
+#include "Public/defines.h"
 
 namespace Ui {
 class WidgetTabPages;
@@ -26,15 +27,20 @@ public:
     int getTabCount();
 
 public:
-    void addTab(int socketptr);
+    void addTab(const QString& key, int socketptr);
     void removeTab(int socketptr);
     void setCurrentIndex(int index);
 
     void appentData(int socketptr, const QByteArray& data);
 
+signals:
+    void sgl_client_operation(int operation, const ClientInfo& info);
+
 public slots:
     void slot_current_index_change(int socketptr);
-    void slot_new_client_coming(const int ptr, const QString & address, const quint16 port, QStandardItem *parentitem);
+    void slot_client_operation(int operation, const ClientInfo &info);
+    void slot_socket_write(uint32_t socketdescriptor, int length);
+
 
 private:
     Ui::WidgetTabPages *ui;

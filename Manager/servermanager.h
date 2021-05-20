@@ -23,11 +23,13 @@ public:
 
 public slots:
     void slot_operation_server(int operation, const ServerInfo& info);
+    void slot_operation_client(int operation, const ClientInfo& info);
 
 signals:
     void sgl_server_operation(int operation, const ServerInfo& info);
     void sgl_client_operation(int operation, const ClientInfo& info);
     void sgl_add_server_status(bool success);
+    void sgl_socket_write(uint32_t socketdescriptor, int length);
 
 private:
     QMap<QString, TcpServer*> mMapServers;

@@ -1,5 +1,7 @@
 ﻿#include "tcpsocket.h"
 
+#include <QHostAddress>
+
 using namespace mtr;
 
 TcpSocket::TcpSocket(QObject *parent) : QTcpSocket(parent)
@@ -8,6 +10,7 @@ TcpSocket::TcpSocket(QObject *parent) : QTcpSocket(parent)
     connect(this, &TcpSocket::connected, this, &TcpSocket::slot_connected);
     connect(this, &TcpSocket::disconnected, this, &TcpSocket::slot_disconnected);
     connect(this, &TcpSocket::stateChanged, this, &TcpSocket::slot_stateChanged);
+    connect(this, &TcpSocket::errorOccurred, this, &TcpSocket::slot_error_occurr);
 }
 
 TcpSocket::TcpSocket(const TcpSocket& socket)
@@ -17,7 +20,7 @@ TcpSocket::TcpSocket(const TcpSocket& socket)
 
 TcpSocket::~TcpSocket()
 {
-
+    qDebug() << "delete socket";
 }
 
 int TcpSocket::sentData(const QByteArray &data)
@@ -33,6 +36,13 @@ void TcpSocket::pause()
 void TcpSocket::startup()
 {
     setSocketState(ConnectedState);
+}
+
+void TcpSocket::connectServer(const QString &address, uint port)
+{
+    mAddress = address;
+    mPort = port;
+    connectToHost(QHostAddress(address), port);
 }
 
 void TcpSocket::slot_ready_read()
@@ -54,5 +64,10 @@ void TcpSocket::slot_stateChanged(QAbstractSocket::SocketState state)
 {
     Q_UNUSED(state);
     emit sgl_stateChanged(this);
+}
+
+void TcpSocket::slot_error_occurr(QAbstractSocket::SocketError error)
+{
+    emit sgl_error_occurred(QString("%1:%2").arg(mAddress).arg(mPort), error);
 }
 

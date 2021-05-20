@@ -2,8 +2,8 @@
 #include "ui_widgettabpages.h"
 
 #include <QTabBar>
+#include <QTextCodec>
 
-#include "Public/defines.h"
 #include "Widget/widgettabcontent.h"
 
 // test
@@ -33,14 +33,21 @@ int WidgetTabPages::getTabCount()
     return ui->tabWidget->count();
 }
 
-void WidgetTabPages::addTab(int socketptr)
+void WidgetTabPages::addTab(const QString& key, int socketptr)
 {
+    qDebug() << "key " <<key;
     int current = 0;
     if (ui->tabWidget->count() > 0)
+    {
         current = ui->tabWidget->currentIndex();
-    WidgetTabContent *content = new WidgetTabContent(socketptr, this);
+    }
+
+    WidgetTabContent *content = new WidgetTabContent(key, socketptr, this);
     ui->tabWidget->addTab(content, "-----");
     ui->tabWidget->setCurrentIndex(current);
+
+    connect(content, &WidgetTabContent::sgl_client_operation, this, &WidgetTabPages::sgl_client_operation);
+
     mMapContent.insert(socketptr, content);
 }
 
@@ -57,7 +64,11 @@ void WidgetTabPages::appentData(int socketptr, const QByteArray &data)
 {
     WidgetTabContent *content = mMapContent.value(socketptr);
     if (nullptr == content) return;
-    content->appendData(data);
+
+    QTextCodec *codec = QTextCodec::codecForName(content->getCurrentCodeTypeName().data());
+    QString string = codec->toUnicode(data);
+
+    content->appendData(string);
 }
 
 /// <summary>
@@ -70,15 +81,25 @@ void WidgetTabPages::slot_current_index_change(int socketptr)
     ui->tabWidget->setCurrentWidget(mMapContent.value(socketptr));
 }
 
-void WidgetTabPages::slot_new_client_coming(const int ptr, const QString &address, const quint16 port, QStandardItem *parentitem)
+void WidgetTabPages::slot_client_operation(int operation, const ClientInfo &info)
 {
-    int index = ui->tabWidget->count();
-    QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), QString("%1:%2").arg(address).arg(port));
-    item->setData(index, Qt::UserRole + 1);
-    item->setData(Tcp_Client, Qt::UserRole + 2); // tcp_server tcp_client 等
-    item->setData(address, Qt::UserRole + 3);
-    item->setData(port, Qt::UserRole + 4);
-    item->setData(ptr, Qt::UserRole + 5); // 套接字
+    // 客户端的各种动作，不同的消息给出不同的操作
+    switch (operation) {
+    case Client_Add:
+        this->addTab(info.serverkey, info.socketDescriptor);
+        break;
+    case Client_Data:
+        this->appentData(info.socketDescriptor, info.data);
+        break;
+    case Client_Close:
+        this->removeTab(info.socketDescriptor);
+        break;
+    }
+}
 
-    parentitem->appendRow(item);
+void WidgetTabPages::slot_socket_write(uint32_t socketdescriptor, int length)
+{
+    if (!mMapContent.contains(socketdescriptor)) return;
+    auto widget = mMapContent.value(socketdescriptor);
+    widget->applySendResult(length);
 }

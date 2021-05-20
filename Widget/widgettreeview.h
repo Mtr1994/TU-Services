@@ -35,6 +35,7 @@ public:
 signals:
     void sgl_current_socket_change(int index);
     void sgl_server_operation(int operation, const ServerInfo& info);
+    void sgl_client_operation(int operation, const ClientInfo& info);
 
 public slots:
     void slot_server_operation(int operation, const ServerInfo& info);
