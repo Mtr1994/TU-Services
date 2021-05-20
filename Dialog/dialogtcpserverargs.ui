@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
+    <width>480</width>
     <height>240</height>
    </rect>
   </property>
@@ -68,6 +68,9 @@
       </item>
       <item row="5" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>24</number>
+        </property>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
@@ -131,6 +134,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tbAddress</tabstop>
+  <tabstop>tbPort</tabstop>
+  <tabstop>btnConfirm</tabstop>
+  <tabstop>btnCancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

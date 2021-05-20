@@ -109,6 +109,9 @@
       </item>
       <item row="2" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>24</number>
+        </property>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">

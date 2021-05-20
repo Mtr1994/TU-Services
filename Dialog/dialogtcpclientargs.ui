@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>198</height>
+    <width>480</width>
+    <height>240</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,7 +84,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <property name="spacing">
-           <number>18</number>
+           <number>24</number>
           </property>
           <item>
            <widget class="QPushButton" name="btnOk">
@@ -131,6 +131,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tbAddress</tabstop>
+  <tabstop>tbPort</tabstop>
+  <tabstop>btnOk</tabstop>
+  <tabstop>btnCancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

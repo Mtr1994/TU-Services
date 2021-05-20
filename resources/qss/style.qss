@@ -57,7 +57,7 @@ QDockWidget
 /* QPushButton */
 QPushButton[Wcd="true"]
 {
-    min-height: 1.5em;
+    min-height: 1.6em;
     border: 1px solid #68687f;
     border-radius: 2px;
     padding-left: 1em;
@@ -84,7 +84,7 @@ QPushButton[Wcd="true"]:!enabled
 
 QPushButton[Ok="true"]
 {
-    min-height: 1.5em;
+    min-height: 1.6em;
     border: 1px solid #b3d8ff;
     border-radius: 2px;
     padding-left: 1em;
@@ -110,7 +110,7 @@ QPushButton[Ok="true"]:!enabled
 
 QPushButton[Cancel="true"]
 {
-    min-height: 1.5em;
+    min-height: 1.6em;
     border: 1px solid #dcdfe6;
     border-radius: 2px;
     padding-left: 1em;
@@ -158,7 +158,7 @@ QPushButton[menu="true"]:checked
 /* QLineEdit */
 QLineEdit
 {
-    min-height: 1.5em;
+    min-height: 1.8em;
     border: 1px solid #dddddd;
     border-radius: 2px;
     padding-left: 0.5em;
@@ -261,7 +261,9 @@ QMenuBar::item::selected
 QMenu
 {
     background-color : #fefefe;
-    padding:2px;
+    padding: 2px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
 }
 
 QMenu::item
